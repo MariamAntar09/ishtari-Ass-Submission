@@ -17,11 +17,17 @@ export async function fetchProducts(token?: string): Promise<ProductList> {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 
-  if (res.status === 401 || res.status === 403) {
-    throw new Error("Unauthorized access");
+  if (res.status === 401) {
+    throw new Error("Unauthorized: Invalid or missing token.");
   }
 
-  if (!res.ok) throw new Error("Failed to fetch products");
+  if (res.status === 403) {
+    throw new Error("Forbidden: Access denied.");
+  }
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.statusText}`);
+  }
 
   const data = await res.json();
   return ProductListSchema.parse(data);
@@ -33,11 +39,17 @@ export async function fetchProductById(id: string, token?: string): Promise<Prod
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 
-  if (res.status === 401 || res.status === 403) {
-    throw new Error("Unauthorized access");
+  if (res.status === 401) {
+    throw new Error("Unauthorized: Invalid or missing token.");
   }
 
-  if (!res.ok) throw new Error("Failed to fetch product");
+  if (res.status === 403) {
+    throw new Error("Forbidden: Access denied.");
+  }
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.statusText}`);
+  }
 
   const data = await res.json();
   return ProductSchema.parse(data);
@@ -59,11 +71,17 @@ export async function createProduct(
     body: JSON.stringify(payload),
   });
 
-  if (res.status === 401 || res.status === 403) {
-    throw new Error("Unauthorized access");
+  if (res.status === 401) {
+    throw new Error("Unauthorized: Invalid or missing token.");
   }
 
-  if (!res.ok) throw new Error("Failed to create product");
+  if (res.status === 403) {
+    throw new Error("Forbidden: Access denied.");
+  }
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.statusText}`);
+  }
 
   const data = await res.json();
   return ProductSchema.parse(data);
@@ -86,11 +104,17 @@ export async function updateProductStatus(
     body: JSON.stringify(payload),
   });
 
-  if (res.status === 401 || res.status === 403) {
-    throw new Error("Unauthorized access");
+  if (res.status === 401) {
+    throw new Error("Unauthorized: Invalid or missing token.");
   }
 
-  if (!res.ok) throw new Error("Failed to update product status");
+  if (res.status === 403) {
+    throw new Error("Forbidden: Access denied.");
+  }
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products: ${res.statusText}`);
+  }
 
   const data = await res.json();
   return ProductSchema.parse(data);
