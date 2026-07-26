@@ -2,13 +2,19 @@ const products = [
   {
     id: "1",
     name: "Kitchen Product",
-    status: "available",
+    status: "active",
     createdAt: new Date().toISOString(),
   },
   {
     id: "2",
     name: "Bedroom Product",
     status: "out_of_stock",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "3",
+    name: "Living Room Product",
+    status: "inactive",
     createdAt: new Date().toISOString(),
   },
 ];
@@ -21,7 +27,7 @@ async function findById(id) {
   return products.find((product) => product.id === id);
 }
 
-let nextId = 3;
+let nextId = 4;
 
 async function create(input) {
   const newProduct = {

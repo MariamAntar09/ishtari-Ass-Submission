@@ -16,7 +16,7 @@ export default function HomePage() {
       try {
         setLoading(true);
         setError(null);
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0ZXN0ZXIiLCJpYXQiOjE3ODUwMjEyNzZ9.ME5dGA-kTCdKFHzXwnSaiJYUgAlrJJFQNTjT28R2G5U";        
+        const token = process.env.NEXT_PUBLIC_DEMO_JWT_TOKEN || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0ZXN0ZXIiLCJpYXQiOjE3ODUwMjEyNzZ9.ME5dGA-kTCdKFHzXwnSaiJYUgAlrJJFQNTjT28R2G5U";        
         const response = await fetchProducts(token);
         setProducts(response.data);
       } catch (err: unknown) {
@@ -43,6 +43,20 @@ export default function HomePage() {
     return matchesSearch && matchesStatus;
   });
 
+  // Helper function to return distinct background & text colors per status
+  const getBadgeStyle = (status: Product["status"]) => {
+    switch (status) {
+      case "active":
+        return { backgroundColor: "#dcfce7", color: "#166534" }; // Green
+      case "inactive":
+        return { backgroundColor: "#f3f4f6", color: "#374151" }; // Gray
+      case "out_of_stock":
+        return { backgroundColor: "#fef3c7", color: "#92400e" }; // Yellow/Orange
+      default:
+        return { backgroundColor: "#f3f4f6", color: "#374151" };
+    }
+  };
+
   return (
     <div style={{ maxWidth: "800px", margin: "2rem auto", padding: "0 1rem", fontFamily: "sans-serif" }}>
       <h1>Product Dashboard</h1>
@@ -62,7 +76,8 @@ export default function HomePage() {
           style={{ padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
         >
           <option value="all">All Statuses</option>
-          <option value="available">Available</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
           <option value="out_of_stock">Out of Stock</option>
         </select>
       </div>
@@ -93,28 +108,31 @@ export default function HomePage() {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
-              <tr key={product.id} style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "0.75rem" }}>{product.id}</td>
-                <td style={{ padding: "0.75rem", fontWeight: 500 }}>{product.name}</td>
-                <td style={{ padding: "0.75rem" }}>
-                  <span
-                    style={{
-                      padding: "0.25rem 0.5rem",
-                      borderRadius: "4px",
-                      fontSize: "0.875rem",
-                      backgroundColor: product.status === "available" ? "#dcfce7" : "#fef3c7",
-                      color: product.status === "available" ? "#166534" : "#92400e",
-                    }}
-                  >
-                    {product.status}
-                  </span>
-                </td>
-                <td style={{ padding: "0.75rem" }}>
-                  {new Date(product.createdAt).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
+            {filteredProducts.map((product) => {
+              const badgeStyle = getBadgeStyle(product.status);
+              return (
+                <tr key={product.id} style={{ borderBottom: "1px solid #eee" }}>
+                  <td style={{ padding: "0.75rem" }}>{product.id}</td>
+                  <td style={{ padding: "0.75rem", fontWeight: 500 }}>{product.name}</td>
+                  <td style={{ padding: "0.75rem" }}>
+                    <span
+                      style={{
+                        padding: "0.25rem 0.5rem",
+                        borderRadius: "4px",
+                        fontSize: "0.875rem",
+                        backgroundColor: badgeStyle.backgroundColor,
+                        color: badgeStyle.color,
+                      }}
+                    >
+                      {product.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: "0.75rem" }}>
+                    {new Date(product.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

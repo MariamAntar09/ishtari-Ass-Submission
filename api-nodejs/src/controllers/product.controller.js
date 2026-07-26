@@ -1,5 +1,4 @@
 const productService = require("../services/product.service");
-const { CreateProductSchema, UpdateStatusSchema } = require("../schemas/product.schema");
 
 async function getProducts(req, res, next) {
   try {
@@ -21,9 +20,7 @@ async function getProductById(req, res, next) {
 
 async function createProduct(req, res, next) {
   try {
-    const validatedData = CreateProductSchema.parse(req.body);
-    const newProduct = await productService.createNewProduct(validatedData);
-
+    const newProduct = await productService.createNewProduct(req.body);
     res.status(201).json({ success: true, data: newProduct });
   } catch (error) {
     next(error);
@@ -32,12 +29,10 @@ async function createProduct(req, res, next) {
 
 async function updateProductStatus(req, res, next) {
   try {
-    const validatedData = UpdateStatusSchema.parse(req.body);
     const updatedProduct = await productService.changeProductStatus(
       req.params.id,
-      validatedData.status
+      req.body.status
     );
-
     res.status(200).json({ success: true, data: updatedProduct });
   } catch (error) {
     next(error);

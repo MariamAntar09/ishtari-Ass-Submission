@@ -4,7 +4,7 @@ import { z } from "zod";
 export const ProductSchema = z.object({
   id: z.string(),
   name: z.string(),
-  status: z.enum(["available", "out_of_stock"]),
+  status: z.enum(["active","inactive", "out_of_stock"]),
   createdAt: z.string(),
 });
 
@@ -16,12 +16,12 @@ export const ProductListSchema = z.object({
 // Schema for Creating a Product
 export const CreateProductSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  status: z.enum(["available", "out_of_stock"]).default("available"),
+  status: z.enum(["active","inactive", "out_of_stock"]).default("active"),
 });
 
 // Schema for Updating Product Status
 export const UpdateStatusSchema = z.object({
-  status: z.enum(["available", "out_of_stock"]),
+  status: z.enum(["active","inactive", "out_of_stock"]),
 });
 
 // Export TypeScript Types inferred from Zod schemas
