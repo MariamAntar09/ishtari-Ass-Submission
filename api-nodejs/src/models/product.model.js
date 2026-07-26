@@ -1,4 +1,3 @@
-// In-memory array acting as our mock database
 const products = [
   {
     id: "1",
@@ -14,18 +13,17 @@ const products = [
   },
 ];
 
-
-export async function findAll() {
+async function findAll() {
   return products;
 }
 
-export async function findById(id) {
+async function findById(id) {
   return products.find((product) => product.id === id);
 }
 
 let nextId = 3;
 
-export async function create(input) {
+async function create(input) {
   const newProduct = {
     id: String(nextId++),
     ...input,
@@ -35,10 +33,17 @@ export async function create(input) {
   return newProduct;
 }
 
-export async function updateStatus(id, status) {
+async function updateStatus(id, status) {
   const product = products.find((p) => p.id === id);
   if (!product) return undefined;
 
   product.status = status;
   return product;
 }
+
+module.exports = {
+  findAll,
+  findById,
+  create,
+  updateStatus,
+};
