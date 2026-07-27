@@ -5,10 +5,11 @@ and a Node.js/Express REST API built with strict layered architecture, security 
 
 ## Project Structure
 
+```text
 ishtari-Ass-Submission/
 ├── dashboard-nextjs/   # Next.js (App Router) Frontend Dashboard
-├── api-nodejs/          # Express REST API ( Layered Architecture : Route → Controller → Service → Model )
-└── README.md
+├── api-nodejs/         # Express REST API (Layered Architecture: Route → Controller → Service → Model)
+└── README.md           # Main Project Documentation
 
 
 ## Environment Configuration
