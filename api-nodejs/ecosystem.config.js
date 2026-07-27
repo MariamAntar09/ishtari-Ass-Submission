@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "ishtari-api",
+      name: "api-nodejs",
       script: "./src/index.js",
       env: {
         NODE_ENV: "production",
@@ -9,7 +9,6 @@ module.exports = {
       out_file: "./logs/out.log",
       error_file: "./logs/error.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss",
-      //ignore_watch: ["node_modules", "logs"],
     },
   ],
 };
